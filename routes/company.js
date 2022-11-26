@@ -1,35 +1,35 @@
-const express = require('express')
+const express = require("express");
 const router = express.Router();
 
-
-router.get('/',(req,res,next)=> {
-    res.json({data:[
-        {
-            id: 1,
-            name: 'TNI',
-            address: {
-                province: 'Bangkok',
-                postcode: 10001
-            }
+router.get("/", (req, res, next) => {
+  res.json({
+    data: [
+      {
+        id: 01,
+        name: "TNI1",
+        address: {
+          province: "Bangkok1",
+          postcode: 10011,
         },
-        {
-            id: 2,
-            name: 'TNI2',
-            address: {
-                province: 'Bangkok',
-                postcode: 10002
-            }
+      },
+      {
+        id: 02,
+        name: "TNI2",
+        address: {
+          province: "Bangkok2",
+          postcode: 10022,
         },
-        {
-            id: 3,
-            name: 'TNI',
-            address: {
-                province: 'Bangkok',
-                postcode: 10003
-            }
+      },
+      {
+        id: 03,
+        name: "TNI",
+        address: {
+          province: "Bangkok3",
+          postcode: 10033,
         },
-    ]})
-})
-
+      },
+    ],
+  });
+});
 
 module.exports = router;

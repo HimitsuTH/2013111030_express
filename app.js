@@ -5,7 +5,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var company = require('./routes/company')
+var companyRouter = require('./routes/company')
 
 var app = express();
 
@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/company', company)
+app.use('/company', companyRouter)
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
