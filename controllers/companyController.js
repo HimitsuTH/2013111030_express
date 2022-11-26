@@ -3,26 +3,26 @@ exports.index = (req, res, next) => {
     data: [
       {
         id: 01,
-        name: "Agoda",
+        name: "Dentsu",
         address: {
           province: "Bangkok",
-          postcode: 10011,
+          postcode: 10500,
         },
       },
       {
         id: 02,
-        name: "Google",
+        name: "Sony",
         address: {
-          province: "USA",
-          postcode: 10022,
+          province: "Bangkok",
+          postcode: 10110,
         },
       },
       {
         id: 03,
-        name: "Facebook",
+        name: "seven peaks software co. ltd.",
         address: {
-          province: "USA",
-          postcode: 10033,
+          province: "Bangkok",
+          postcode: 10110,
         },
       },
     ],
