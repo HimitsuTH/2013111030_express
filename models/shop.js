@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const shopSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
-    photot: { type: String , default: 'nopic.png'},
+    photo: { type: String , default: 'nopic.png'},
     location: {
         lat: Number,
         lgn: Number,
