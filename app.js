@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 // var cors = require('cors')
 
 
+
+// Router
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var companyRouter = require("./routes/company");
@@ -17,9 +19,13 @@ const shopRouter = require("./routes/shop");
 
 var app = express();
 
-mongoose.connect('mongodb+srv://chinnawich:A123456@2013111030-chin.howw4sj.mongodb.net/restfulapi?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
+// connect server 
+const config = require('./config/index')
+mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
 
 
+
+// setting 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
