@@ -1,5 +1,12 @@
-exports.index = (req, res, next) => {
-  res.json({ fullname: "Chinnawich Ampai" }).status(200);
+const User = require("../models/user");
+
+exports.index = async (req, res, next) => {
+  let user = await User.find().sort({ _id: -1 });
+  res.status(200).json({
+    data: user,
+  });
+
+  // res.json({ fullname: "Chinnawich Ampai" }).status(200);
 };
 
 exports.bio = (req, res, next) => {
@@ -11,17 +18,31 @@ exports.bio = (req, res, next) => {
   });
 };
 
-//---- test----
-// router.get("/user/:id", (req, res, next) => {
-//   res.send(`id: ${req.params.id}`);
-// });
+exports.register = async (req, res, next) => {
+  const { name, email, password } = req.body;
 
-// router.get("/qurey", (req, res, next) => {
-//   res.json({a: req.query.a , b:req.query.b})
-// });
+  let user = new User();
 
-// router.get("/redirect", (req, res) => {
-//   res.redirect(
-//     "https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwjN_dP4-8r7AhUcTmwGHbXhBcMQPAgI"
-//   );
-// });
+  user.name = name;
+  user.email = email;
+  user.password = await user.encryptPassword(password);
+
+  
+
+  try {
+    await user.save();
+    res.status(200).json({
+      message: `Hello , ${name} : ${email}`,
+    });
+  } catch (err) {
+    let message;
+    if (password.length < 5) {
+      message = `Error, Password not match`;
+    } else {
+      message = `Error, Email has already exist`;
+    }
+    res.status(400).json({
+      message: `${message} : ${err}`,
+    });
+  }
+};
