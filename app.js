@@ -5,6 +5,8 @@ var logger = require("morgan");
 const mongoose = require('mongoose');
 
 
+
+
 // var cors = require('cors')
 
 
@@ -19,9 +21,12 @@ const shopRouter = require("./routes/shop");
 
 var app = express();
 
+//MiddleWare
+const errorHandler = require("./middleware/errorHandler");
+
 // connect server 
 const config = require('./config/index')
-mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
+mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false})
 
 
 
@@ -32,9 +37,8 @@ app.use(express.json({
 }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-
 app.use(express.static('public')) 
+
 
 
 // app.use(cors())
@@ -53,5 +57,7 @@ app.use("/shop", shopRouter);
 app.get("*", function (req, res) {
   res.send("404 not found!!!").status(404);
 });
+
+app.use(errorHandler);
 
 module.exports = app;

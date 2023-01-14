@@ -29,13 +29,17 @@ exports.show = async (req, res, next) => {
     const { id } = req.params;
     const company = await Companys.findById(id);
 
+    if (!company) {
+      const error = new Error("Company id: not found!");
+      error.statusCode = 400;
+      throw error;
+    }
+
     res.json({
       data: company,
     });
   } catch (err) {
-    res.status(400).json({
-      message: err,
-    });
+    next(err);
   }
 };
 
@@ -45,18 +49,17 @@ exports.destroy = async (req, res, next) => {
     const company = await Companys.deleteOne({
       _id: id,
     });
-    console.log(company)
+    console.log(company);
     if (company.deletedCount === 0) {
-      throw new Error("Can't delete Company");
-    } else {
-      res.status(200).json({
-        message: "deleted successfully",
-      });
+      const error = new Error("Can't delete Company");
+      error.statusCode = 400;
+      throw error;
     }
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
+    res.status(200).json({
+      message: "deleted successfully",
     });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -72,19 +75,16 @@ exports.update = async (req, res, next) => {
       },
     });
 
-    if(!company){
-      throw new Error('Company not founded')
-    } else {
-      res.status(200).json({
-        message: "Updated Successfully",
-      });
+    if (!company) {
+      const error =  new Error("Company not founded");
+      error.statusCode = 400
+      throw error
     }
-
-  
-  } catch (err) {
-    res.status(400).json({
-      message: err.message,
+    res.status(200).json({
+      message: "Updated Successfully",
     });
+  } catch (err) {
+    next(err);
   }
 };
 

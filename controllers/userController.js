@@ -19,30 +19,34 @@ exports.bio = (req, res, next) => {
 };
 
 exports.register = async (req, res, next) => {
-  const { name, email, password } = req.body;
-
-  let user = new User();
-
-  user.name = name;
-  user.email = email;
-  user.password = await user.encryptPassword(password);
-
-  
-
   try {
+    const { name, email, password } = req.body;
+
+    let user = new User();
+    const existEmail = await User.findOne({ email: email });
+
+    if (existEmail) {
+      const error = new Error("Email has alrely exist!");
+      error.statusCode = 400
+      throw error
+    }
+    if(password.length < 5) {
+      const error = new Error("Password not match!");
+      error.statusCode = 400
+      throw error
+    }
+
+    user.name = name;
+    user.email = email;
+    user.password = await user.encryptPassword(password);
+
     await user.save();
+
     res.status(200).json({
       message: `Hello , ${name} : ${email}`,
     });
   } catch (err) {
-    let message;
-    if (password.length < 5) {
-      message = `Error, Password not match`;
-    } else {
-      message = `Error, Email has already exist`;
-    }
-    res.status(400).json({
-      message: `${message} : ${err}`,
-    });
+    next(err);
   }
 };
+

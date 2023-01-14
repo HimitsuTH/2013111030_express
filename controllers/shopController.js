@@ -44,15 +44,17 @@ exports.show = async (req, res, next) => {
     const { id } = req.params;
     const shop = await Shop.findById(id).populate('menus')
 
-    
+    if(!shop) {
+      const error = new Error("Shop not founded!");
+      error.statusCode = 400
+      throw error
+    }
 
     res.status(200).json({
       data: shop,
     });
   } catch (err) {
-    res.status(400).json({
-      message: err,
-    });
+    next(err);
   }
 };
 
