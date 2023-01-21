@@ -9,7 +9,7 @@ router.get("/menu", shopController.menu);
 router.get("/:id", shopController.show);
 router.post("/", [
     body('name').not().isEmpty().withMessage("Please Enter your name."),
-   
+    
     body("location.lat")
       .not()
       .isEmpty()

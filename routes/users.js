@@ -15,6 +15,9 @@ router.post("/" ,[
 ], userController.register)
 
 
-router.post('/login', userController.login);
+router.post('/login',[
+    body('email').not().isEmpty().withMessage("Please Enter Email.").isEmail().withMessage("Email not match"),
+    body('password').not().isEmpty().withMessage("Please Enter Password.").isLength({ min: 5 }).withMessage("Password should have more than 5 character.")
+], userController.login);
 
 module.exports = router;
