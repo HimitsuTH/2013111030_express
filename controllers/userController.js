@@ -1,5 +1,5 @@
 const User = require("../models/user");
-
+const { validationResult } = require('express-validator')
 exports.index = async (req, res, next) => {
   let user = await User.find().sort({ _id: -1 });
   res.status(200).json({
@@ -22,11 +22,21 @@ exports.register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("received incorrect information!")
+      error.statusCode = 422
+      error.validation = errors.array()
+      throw error
+    }
+
+
+
     let user = new User();
     const existEmail = await User.findOne({ email: email });
 
     if (existEmail) {
-      const error = new Error("Email has alrely exist!");
+      const error = new Error("Email has alrealy exist!");
       error.statusCode = 400
       throw error
     }
@@ -49,4 +59,10 @@ exports.register = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.login = ({ req, res ,next }) => {
+  res.status(200).json({
+    message: "Hello, login"
+  })
+}
 

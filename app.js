@@ -26,7 +26,7 @@ const errorHandler = require("./middleware/errorHandler");
 
 // connect server 
 const config = require('./config/index')
-mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false})
+mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false, useCreateIndex: true})
 
 
 

@@ -1,5 +1,6 @@
 const Staff = require("../models/staff");
 const config = require("../config/index");
+const { validationResult } = require("express-validator");
 
 const fs = require("fs");
 const path = require("path");
@@ -15,9 +16,16 @@ exports.index = async (req, res, next) => {
 };
 
 exports.insert = async (req, res, next) => {
-  const { name, salary, photo } = req.body;
-
   try {
+    const { name, salary, photo } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("received incorrect information!");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
+
     let _ph;
     if (!photo) {
       _ph = `nopic.png`;
@@ -32,13 +40,12 @@ exports.insert = async (req, res, next) => {
       // photo:  await saveImageToDisk(photo)
     });
     await staff.save();
+    res.status(200).json({
+      message: "Insert Successfully",
+    });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
-
-  res.status(200).json({
-    message: "Insert Successfully",
-  });
 };
 
 exports.show = async (req, res, next) => {
@@ -99,7 +106,6 @@ exports.update = async (req, res, next) => {
     //   name: name,
     //   salary: salary,
     // });
-    
 
     const staff = await Staff.updateOne(
       { _id: id },
@@ -114,12 +120,11 @@ exports.update = async (req, res, next) => {
     //   throw error;
     // }
 
-    if(!staff_id) {
+    if (!staff_id) {
       const error = new Error("Update failed!");
       error.statusCode = 400;
       throw error;
     }
-
 
     res.status(200).json({
       message: "Updated Successfully",
