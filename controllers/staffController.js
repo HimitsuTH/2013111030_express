@@ -9,6 +9,7 @@ const { promisify } = require("util");
 const writeFileAsync = promisify(fs.writeFile);
 
 exports.index = async (req, res, next) => {
+   
   let staffs = await Staff.find().sort({ _id: -1 });
   res.status(200).json({
     data: staffs,

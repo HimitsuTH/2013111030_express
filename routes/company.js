@@ -1,8 +1,11 @@
 const express = require("express");
 let router = express.Router();
 const companyController = require('../controllers/companyController')
+const passportJWT = require("../middleware/passportJWT").isLogin;
+const checkAdmin = require('../middleware/checkAdmin').isAdmin;
 
-router.get("/", companyController.index);
+
+router.get("/",[passportJWT,checkAdmin], companyController.index);
 
 router.post('/insert' , companyController.insert);
 

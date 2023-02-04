@@ -2,6 +2,7 @@ const User = require("../models/user");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const config = require('../config/index');
+const user = require("../models/user");
 
 exports.index = async (req, res, next) => {
   let user = await User.find().sort({ _id: -1 });
@@ -23,7 +24,7 @@ exports.bio = (req, res, next) => {
 
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password ,role} = req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -49,6 +50,7 @@ exports.register = async (req, res, next) => {
 
     user.name = name;
     user.email = email;
+    user.role = role;
     user.password = await user.encryptPassword(password);
 
     await user.save();
@@ -108,3 +110,15 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.profile = (req , res, next)=> {
+
+  const {name , email, role} = req.user
+  res.status(200).json({
+    user: {
+      name,
+      email,
+      role
+    }
+  })
+}
