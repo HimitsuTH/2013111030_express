@@ -3,6 +3,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 
 
@@ -45,6 +46,9 @@ app.use(express.static('public'))
 
 
 // app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+
+// Routes
 
 app.use("/", indexRouter);
 app.use("/user", usersRouter);
